@@ -10,10 +10,12 @@ export function SavedView({
   savedPostIds,
   giftSaves,
   onRemoveGift,
+  onOpenPost,
 }: {
   savedPostIds: string[]
   giftSaves: GiftSave[]
   onRemoveGift: (saveId: string) => void
+  onOpenPost: (postId: string) => void
 }) {
   const [collection, setCollection] = useState<"overview" | "gift" | "all">("overview")
 
@@ -58,17 +60,24 @@ export function SavedView({
                     const post = posts.find((p) => p.id === save.postId)!
                     return (
                       <div key={save.id} className="group relative aspect-square overflow-hidden rounded-md bg-ig-surface">
-                        <Image src={post.image || "/placeholder.svg"} alt={post.productName} fill sizes="120px" className="object-cover" />
+                        <button
+                          type="button"
+                          aria-label={`Open ${post.productName} post`}
+                          onClick={() => onOpenPost(post.id)}
+                          className="absolute inset-0 z-0"
+                        >
+                          <Image src={post.image || "/placeholder.svg"} alt={post.productName} fill sizes="120px" className="object-cover" />
+                        </button>
                         <button
                           type="button"
                           aria-label={`Remove ${post.productName} for ${person.name}`}
                           onClick={() => onRemoveGift(save.id)}
-                          className="absolute right-1 top-1 flex size-6 items-center justify-center rounded-full bg-black/60 text-ig-text"
+                          className="absolute right-1 top-1 z-10 flex size-6 items-center justify-center rounded-full bg-black/60 text-ig-text"
                         >
                           <X className="size-3.5" />
                         </button>
                         {save.note && (
-                          <span className="absolute inset-x-1 bottom-1 truncate rounded bg-black/65 px-1.5 py-0.5 text-[10px] text-ig-text">
+                          <span className="pointer-events-none absolute inset-x-1 bottom-1 z-10 truncate rounded bg-black/65 px-1.5 py-0.5 text-[10px] text-ig-text">
                             {save.note}
                           </span>
                         )}
@@ -95,9 +104,15 @@ export function SavedView({
         ) : (
           <div className="grid grid-cols-3 gap-1 p-3">
             {allSavedPosts.map((post) => (
-              <div key={post.id} className="relative aspect-square overflow-hidden rounded-md bg-ig-surface">
+              <button
+                key={post.id}
+                type="button"
+                aria-label={`Open ${post.productName} post`}
+                onClick={() => onOpenPost(post.id)}
+                className="relative aspect-square overflow-hidden rounded-md bg-ig-surface"
+              >
                 <Image src={post.image || "/placeholder.svg"} alt={post.productName} fill sizes="120px" className="object-cover" />
-              </div>
+              </button>
             ))}
           </div>
         )}

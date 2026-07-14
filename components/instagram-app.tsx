@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Bookmark, Gift, Heart, Home, PlusSquare, Search } from "lucide-react"
+import { Bookmark, ChevronLeft, Gift, Heart, Home, PlusSquare, Search } from "lucide-react"
 import { people, posts, type GiftSave } from "@/lib/data"
 import { PostCard } from "./post-card"
 import { SaveGiftSheet } from "./save-gift-sheet"
@@ -16,6 +16,7 @@ export function InstagramApp() {
   const [savedPostIds, setSavedPostIds] = useState<string[]>([])
   const [giftSaves, setGiftSaves] = useState<GiftSave[]>([])
   const [giftSheetPostId, setGiftSheetPostId] = useState<string | null>(null)
+  const [openPostId, setOpenPostId] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
   const [hintDismissed, setHintDismissed] = useState(false)
 
@@ -35,6 +36,7 @@ export function InstagramApp() {
   }, [giftSaves])
 
   const sheetPost = giftSheetPostId ? posts.find((p) => p.id === giftSheetPostId) ?? null : null
+  const openPost = openPostId ? posts.find((p) => p.id === openPostId) ?? null : null
   const existingPersonIdsForSheet = sheetPost
     ? giftSaves.filter((g) => g.postId === sheetPost.id).map((g) => g.personId)
     : []
@@ -112,6 +114,7 @@ export function InstagramApp() {
             savedPostIds={savedPostIds}
             giftSaves={giftSaves}
             onRemoveGift={(saveId) => setGiftSaves((prev) => prev.filter((g) => g.id !== saveId))}
+            onOpenPost={(postId) => setOpenPostId(postId)}
           />
         )}
       </main>
@@ -139,6 +142,27 @@ export function InstagramApp() {
           <UserAvatar name="You" color="oklch(0.6 0.13 280)" size={26} />
         </button>
       </nav>
+
+      {/* post detail (from a saved thumbnail) */}
+      {openPost && (
+        <div className="absolute inset-0 z-40 flex flex-col bg-ig-bg animate-in fade-in slide-in-from-right-4">
+          <header className="flex items-center gap-3 border-b border-ig-border px-2 py-3">
+            <button type="button" onClick={() => setOpenPostId(null)} aria-label="Back to saved">
+              <ChevronLeft className="size-6 text-ig-text" />
+            </button>
+            <h2 className="text-base font-semibold text-ig-text">Post</h2>
+          </header>
+          <div className="flex-1 overflow-y-auto">
+            <PostCard
+              post={openPost}
+              isSaved={savedPostIds.includes(openPost.id)}
+              giftCount={giftCountByPost[openPost.id] ?? 0}
+              onToggleSave={() => toggleSave(openPost.id)}
+              onSaveAsGift={() => setGiftSheetPostId(openPost.id)}
+            />
+          </div>
+        </div>
+      )}
 
       {/* gift sheet */}
       {sheetPost && (
