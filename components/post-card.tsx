@@ -37,20 +37,34 @@ export function PostCard({
     if (timer.current) clearTimeout(timer.current)
   }, [])
 
-  const handleSaveClick = useCallback(() => {
-    // If a long press already opened the menu, ignore the trailing click.
-    if (longPressTriggered.current) {
-      longPressTriggered.current = false
-      return
-    }
-    onToggleSave()
-  }, [onToggleSave])
+  const handleSaveClick = useCallback(
+    (e: React.MouseEvent) => {
+      // If a long press already opened the menu, swallow the trailing click
+      // so it doesn't bubble to the window listener and close the menu.
+      if (longPressTriggered.current) {
+        longPressTriggered.current = false
+        e.stopPropagation()
+        return
+      }
+      onToggleSave()
+    },
+    [onToggleSave],
+  )
 
   useEffect(() => {
     if (!menuOpen) return
     const close = () => setMenuOpen(false)
-    window.addEventListener("click", close)
-    return () => window.removeEventListener("click", close)
+    // Defer attaching so the click/touch that opened the menu (which fires
+    // after the long-press timer) doesn't immediately dismiss it.
+    const id = setTimeout(() => {
+      window.addEventListener("click", close)
+      window.addEventListener("touchstart", close)
+    }, 0)
+    return () => {
+      clearTimeout(id)
+      window.removeEventListener("click", close)
+      window.removeEventListener("touchstart", close)
+    }
   }, [menuOpen])
 
   return (
@@ -100,6 +114,7 @@ export function PostCard({
             <div
               role="menu"
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               className="absolute bottom-9 right-0 z-20 w-52 overflow-hidden rounded-2xl border border-ig-border bg-ig-elevated shadow-2xl animate-in fade-in zoom-in-95 duration-150"
             >
               <button
