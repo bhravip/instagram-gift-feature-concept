@@ -1,4 +1,4 @@
-# Instagram Feature Concept - Save a Gift
+# Instagram Feature Concept - Save as Gift
 
 **Live prototype:** https://instagram-gift-feature-concept.vercel.app
 
