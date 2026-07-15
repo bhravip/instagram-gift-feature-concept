@@ -4,123 +4,150 @@
 
 A product concept and interactive prototype exploring what it would look like if Instagram let you save a post specifically *for* someone. This is a case study / portfolio piece, not an affiliation with or endorsement by Instagram or Meta. All UI is an original design inspired by familiar social app patterns.
 
----
+# PRD: Instagram "Save as Gift"
 
 ## Product overview
 
-"Save as Gift" extends Instagram's existing save/collections feature to let users tag a saved post with a specific person instead of a generic folder. Long-pressing the save button on any post surfaces a "Save as gift" option; the user picks one or more followers, and the post is filed into a "Saved as gift" collection organized by recipient. It solves the moment where someone sees a product or post and thinks "X would love this" — but has no fast way to act on that thought before it's lost.
+"Save as Gift" is an extension of Instagram's existing Save/bookmark behavior that turns saved posts into a lightweight gift-planning tool. When a user long-presses the Save button on a post, they get a new option—"Save as gift"—that lets them attach one or more people to the saved item. These gift saves live in a dedicated "Saved as gift" collection in the Saved tab, organized by recipient, so users can keep a running list of gift ideas for the people in their life. Every saved item links back to the original post, keeping discovery and purchase intent connected to the source content.
 
 ## Purpose, use cases, and main value propositions
 
-**Purpose:** reduce the gap between spotting a gift idea and remembering it later, by attaching context (who it's for) at the moment of discovery instead of relying on memory.
+**Purpose.** People already use Instagram's Save feature as an informal wishlist and idea board, but there's no way to tie a saved item to *who* it's for. This feature closes that gap by adding recipient context to saves, reducing the friction of remembering "who was this for again?"
 
-**Primary use case:** a user is scrolling their feed, sees a product or post that reminds them of a specific person, and wants to save that thought without breaking flow or reconstructing it later.
+**Primary use cases.**
 
-**Secondary use case:** ahead of a birthday or occasion, a user opens their gifting collection to review everything they've saved for that person over time.
+- Spotting a product a friend or family member would love and saving it against their name for a future birthday or holiday.
+- Building up gift ideas over time for multiple people, then browsing them per-person when an occasion arrives.
+- Saving a single post for several people at once (e.g., a candle both your mom and sister would like).
+- Returning to the original post to view details, comments, the seller, or a product tag when ready to act.
 
-**Value propositions:**
-- Turns a passive, generic save into an actionable, person-specific one
-- Reuses existing save/collections infrastructure — low net-new complexity for a plausible feature pitch
-- Removes the "who was this for again?" problem entirely, since the tag is attached at save time
+**Value propositions.**
+
+- **For users:** an organized, occasion-ready gift board that removes mental overhead and prevents lost ideas.
+- **For creators/sellers:** stronger downstream purchase intent, since gift saves route users back to the source post.
+- **For Instagram:** deeper engagement with Save and Shopping surfaces, and a differentiated, emotionally resonant use of an existing behavior.
 
 ## Features and functionality
 
-| Feature | Description |
-|---|---|
-| Save as gift (long-press) | Long-pressing the save icon on a post reveals "Save" and "Save as gift" as two distinct actions |
-| Person picker | Searchable list of followers; supports multi-select in a single save action |
-| Multi-recipient save | Saving for multiple people creates one independent entry per recipient, not one shared entry |
-| Saved as gift collection | A dedicated tab within Saved, organized as cards per person rather than a flat post grid |
-| Per-person view | Tapping a person's card shows everything saved for them, most recent first |
+1. **Long-press Save menu.** A press-and-hold (or right-click on desktop) on the Save icon reveals a contextual menu with "Save" and "Save as gift." A normal tap still performs a standard save, preserving existing behavior. The menu is dismissible by tapping outside it.
+2. **Recipient picker (bottom sheet).** Selecting "Save as gift" opens a sheet showing a preview of the post, a searchable list of people (searchable by name, username, or relationship), and multi-select checkboxes.
+3. **Multi-recipient save.** Choosing multiple people creates one gift-save entry per person for the same post. Duplicate saves (same post + same person) are prevented.
+4. **Optional note.** Users can attach a short note per save (e.g., "birthday, size M").
+5. **"Saved as gift" collection.** A new collection in the Saved tab, with a live count, grouping gift saves by recipient.
+6. **Per-person grouping.** The same post appears under each recipient it was saved for. Individual saves can be removed.
+7. **Deep link back to source.** Every saved thumbnail opens the original post in a detail view (with author, location, media, and full post actions) and a back control to return to the collection.
 
 ## User personas and user stories
 
-**Persona: the thoughtful scroller.** Regularly encounters gift ideas passively while browsing, buys gifts for ~5–15 people across the year, currently relies on memory or scattered notes to track ideas.
+**Persona 1 — "The Thoughtful Planner" (Maya, 29).** Plans gifts months ahead, screenshots things constantly, loses track of them.
 
-User stories:
-- As a user scrolling my feed, I want to save a post to a specific person so I don't lose the thought of who it was for.
-- As a user with several friends' birthdays coming up, I want to see everything I've saved for each of them in one place, so I don't have to search my camera roll or memory.
-- As a user, I want to save one post for multiple people at once, since some gift ideas suit more than one friend.
-- As a user, I want this saving activity to stay completely private, since a visible or notified save would ruin the surprise and feel invasive.
+- *As a planner, I want to tag saved posts with a person so that I can find gift ideas per recipient when an occasion comes up.*
+- *As a planner, I want to add a note to a save so that I remember why it fit that person (size, color, occasion).*
+
+**Persona 2 — "The Last-Minute Shopper" (Dev, 34).** Remembers occasions late, needs fast recall.
+
+- *As a last-minute shopper, I want to open a person's gift list quickly so that I can act without scrolling my entire Saved feed.*
+- *As a shopper, I want to jump from a saved idea back to the original post so that I can reach the seller or product tag immediately.*
+
+**Persona 3 — "The Generous Multi-Gifter" (Sam, 41).** Buys for many people, spots items that suit several at once.
+
+- *As a multi-gifter, I want to save one post for several people at once so that I don't repeat the same action multiple times.*
 
 ## User flows and user experience notes
 
-**Primary flow:**
-1. User sees a post and long-presses the bookmark icon
-2. A menu appears with "Save" and "Save as gift"
-3. Selecting "Save as gift" opens a searchable person picker
-4. User selects one or more people, confirms
-5. Post is saved once per selected person into the Saved as gift collection
+**Flow A — Save a post as a gift.**
 
-**Retrieval flow:**
-1. User opens Saved tab
-2. Selects "Saved as gift" collection
-3. Sees cards grouped by person
-4. Taps a person to see everything saved for them
+1. User long-presses Save on a post → menu appears.
+2. Taps "Save as gift" → recipient sheet opens with post preview.
+3. Searches/selects one or more people, optionally adds a note.
+4. Taps the dynamic confirm button ("Save gift for N people") → sheet closes, save is confirmed.
 
-**UX notes:**
-- The long-press must feel like a natural extension of the existing save gesture, not a separate, harder-to-discover action
-- Confirmation on save should be lightweight (toast-style, not a modal) to keep the scrolling flow uninterrupted
-- No visual indicator of this activity should ever be visible to the tagged person, in their notifications, or in any shared/mutual space
+**Flow B — Browse gifts by person.**
+
+1. User opens Saved tab → sees "Saved as gift" collection with a count badge.
+2. Opens it → sees ideas grouped by recipient.
+3. Taps a thumbnail → original post opens in a detail overlay; back returns to the collection.
+4. Optionally removes a save via the X control on a thumbnail.
+
+**UX notes.**
+
+- The long-press must not be dismissed by the trailing click/synthesized touch event that follows a press-and-hold; the menu stays open until an explicit outside tap or selection.
+- A normal tap preserves the standard, instant save with no menu.
+- Thumbnails are full tap targets for opening the post, with remove and note controls layered above so both interactions coexist.
+- Confirm button copy adapts to selection count to reinforce the multi-save mental model.
 
 ## Release criteria and timeline
 
-This is a concept prototype, not a scoped production release — no committed timeline. For a hypothetical phased rollout:
+**Release criteria.**
 
-- **V1 (concept, built):** long-press save flow, person picker, multi-select, Saved as gift collection view — all in the interactive prototype
-- **V2 (not built):** birthday-aware sorting within the collection, when birthday data is available
-- **V3 (not built):** lightweight nudge (not push notification) surfacing upcoming birthdays with what's been saved for that person
+- Long-press reliably surfaces the menu on touch and pointer devices and remains open for selection.
+- Standard tap-to-save is unchanged.
+- Multi-select creates exactly one entry per selected person; duplicates are prevented.
+- "Saved as gift" collection renders grouped-by-person with accurate counts.
+- Every saved item deep-links to its source post and back.
+- Accessibility: all controls keyboard- and screen-reader-operable with correct labels/roles.
 
-Release readiness for a real version would require privacy review (see Risks) before any production consideration.
+**Indicative timeline (phased).**
+
+- Phase 1 — Concept mockup and interaction validation (complete).
+- Phase 2 — Design review, accessibility audit, and usability testing.
+- Phase 3 — Backend model for gift saves + recipient resolution, behind a feature flag.
+- Phase 4 — Limited rollout and instrumentation review.
+- Phase 5 — General availability.
+
+*Note: the current build is an interactive front-end mockup with in-memory state; dates should be set with the responsible eng/design teams.*
 
 ## Potential risks
 
-- **Privacy leak risk.** If a tagged save were ever surfaced to the recipient — even accidentally, via a bug or an edge case like a shared device — it would create real social harm (ruined surprises, awkwardness) and break trust in the feature entirely. This is the single highest-severity risk.
-- **Low discoverability.** Long-press interactions are less discoverable than tap actions; users may never find "Save as gift" without onboarding or a hint.
-- **Unreliable birthday data.** Most users don't have a public or accurate birthday on file, limiting any reminder or sorting functionality that depends on it.
-- **Low engagement if collection goes unused.** If users save items but never revisit the collection before the relevant occasion, the feature provides capture without payoff.
+- **Privacy/social sensitivity:** users may worry that recipients can see they were tagged for a gift. Gift saves must be strictly private to the saver.
+- **Interaction discoverability:** long-press is a hidden gesture; users may never find "Save as gift."
+- **Gesture conflicts:** long-press can collide with existing OS/app gestures or the timing of trailing tap events (a bug already addressed in the mockup).
+- **Scope creep toward commerce:** pressure to add price tracking, wishlists, or purchasing could balloon scope.
+- **Recipient data:** mapping "people" to followers/contacts raises data-model and consent questions.
+- **Scale:** duplicate-prevention and per-person grouping must stay performant for heavy savers.
 
 ## Non-functional requirements
 
-- **Privacy:** save actions and the resulting collection must be fully private to the saver; no notification, activity log entry, or visibility to the tagged person under any circumstance
-- **Performance:** the save flow must not introduce noticeable latency to the long-press gesture, since it's competing with the existing fast, familiar save action
-- **Data handling:** person-tagging data (who was tagged, for what) is sensitive relationship data and should follow the same protection standards as DMs or other private user content, not standard public post metadata
+- **Performance:** menu appears within perceptual instant (<100ms after gesture recognition); collection views render smoothly for large save counts.
+- **Accessibility:** WCAG 2.1 AA — semantic roles (menu/menuitem), descriptive ARIA labels, full keyboard operability, adequate contrast.
+- **Privacy & security:** gift saves and notes are private to the user; recipient associations are never exposed to the recipient or third parties.
+- **Reliability:** saves persist durably; no data loss on navigation or app restart (requires backend beyond the current in-memory mockup).
+- **Responsiveness:** works across mobile and desktop, in light and dark modes.
+- **Internationalization:** dynamic copy (e.g., "Save gift for N people") must support pluralization and localization.
 
 ## Assumptions, dependencies, and constraints
 
-**Assumptions:**
-- Users are comfortable with a private, invisible-to-others save action (i.e., they won't expect or want reciprocity/visibility)
-- The existing save/collections infrastructure can be extended to support person-tagging without a full rebuild
+**Assumptions.**
 
-**Dependencies:**
-- Existing follower graph, to populate the person picker
-- Existing save/collections system, as the underlying mechanism being extended
+- Users already treat Save as an informal wishlist.
+- A meaningful share of saves have gift intent that today goes uncaptured.
+- Users are comfortable associating saved content with people privately.
 
-**Constraints:**
-- Feature usefulness is capped by whatever birthday data Instagram already has, which is inconsistent and often private or absent
-- Not designed to support checkout or shopping flows — saved items may or may not be purchasable depending on the original post's shoppability
+**Dependencies.**
+
+- A "people" source (followers/close friends/contacts) to populate the recipient picker.
+- Backend storage for gift saves, recipients, and notes (recommended: a database integration; the current mockup uses in-memory React state).
+- Existing Save/Collections infrastructure and post-detail rendering.
+
+**Constraints.**
+
+- Must not alter or regress the existing one-tap Save behavior.
+- Long-press remains a secondary, additive gesture.
+- Current implementation is a front-end concept with no persistence or real recipient graph.
 
 ## Evaluation plan and related success metrics
 
-Hypothetical metrics for a real-world version:
+**Evaluation plan.**
 
-- **Adoption:** % of users who use "Save as gift" at least once within 30 days of exposure
-- **Retention of use:** % of users who use it again within 60 days of their first save
-- **Collection revisits:** rate at which users return to the Saved as gift collection (a save with no revisit suggests low realized value)
-- **Occasion correlation:** for users with birthday data on file, whether saves for a given person cluster in the weeks before that person's birthday (a signal the feature is being used as intended)
-- **Qualitative:** user research on whether the privacy guarantee is trusted and understood, since trust here is a precondition for adoption, not just a nice-to-have
+- Usability testing on gesture discoverability and the multi-recipient mental model.
+- A/B test of "Save as gift" (flagged) vs. control, measuring adoption and impact on overall Save usage.
+- Funnel instrumentation across long-press → sheet open → save confirmed → collection revisit → source-post open.
+- Qualitative surveys on perceived usefulness and privacy comfort.
 
----
+**Success metrics.**
 
-## Tech stack
-
-Built with [Next.js](https://nextjs.org) and [v0](https://v0.app). Continue iterating on the design at the [v0 project link](https://v0.app/chat/projects/prj_I7AoHkhhb4G3Y0K23Cr3Qc7J2n5A).
-
-### Running locally
-
-```bash
-npm install
-npm run dev
-```
-
-Open http://localhost:3000 to view it.
+- **Adoption:** % of saving users who use "Save as gift"; gift saves per active saver.
+- **Engagement:** repeat visits to the "Saved as gift" collection; multi-recipient save rate.
+- **Downstream intent:** click-through from a saved gift back to the source post (and, where applicable, to product/seller surfaces).
+- **Retention/quality:** removal rate (proxy for mis-saves), and whether total Save activity rises without cannibalizing standard saves.
+- **Guardrail metrics:** no regression in standard Save completion time or success rate; zero privacy incidents related to recipient exposure.
